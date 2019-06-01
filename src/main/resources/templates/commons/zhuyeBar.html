@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headBar">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>文 笔</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/static/zhuyeAsserts/css/zidingyi.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/static/zhuyeAsserts/css/ready.css">
+    <link rel="stylesheet" href="/static/zhuyeAsserts/css/demo.css">
+    <link type="text/css" href="/static/zhuyeAsserts/css/sample.css"/>
+    <link type="text/css" href="/static/zhuyeAsserts/css/font-awesome.min.css"/>
+    <link type="text/css" href="/static/zhuyeAsserts/css/pace.min.css"/>
+</head>
+<body>
+<div class="main-header" th:fragment="touBar">
+    <!--左上角logo-->
+    <div class="logo-header">
+        <a th:href="#{ctx.a}+@{/WrTextList/}+${kehu?.id}" class="logo">
+            文 笔
+        </a>
+        <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+    </div>
+    <!--头部导航栏-->
+    <nav class="navbar navbar-header navbar-expand-lg">
+        <div class="container-fluid">
+            <!--<form class="navbar-left navbar-form nav-search mr-md-3" action="">-->
+            <!--<div class="input-group">-->
+            <!--<input type="text" placeholder="Search ..." class="form-control">-->
+            <!--<div class="input-group-append">-->
+            <!--<span class="input-group-text">-->
+            <!--<i class="la la-search search-icon"></i>-->
+            <!--</span>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</form>-->
+            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                <li class="nav-item dropdown hidden-caret">
+                    <a class="nav-link dropdown-toggle" id="huishouzhan" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="la la-recycle"></i>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="#{ctx.a}+@{/huishouzhan/}+${kehuid}">回收站</a>
+                        <a class="dropdown-item" href="#">清空回收站</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">撤回全部</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown hidden-caret">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="la la-bell"></i>
+                        <span class="notification">3</span>
+                    </a>
+                    <ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
+                        <li>
+                            <div class="dropdown-title">通 知</div>
+                        </li>
+                        <li>
+                            <div class="notif-center">
+                                <a href="#">
+                                    <div class="notif-img">
+                                        <img th:src="@{/zhuyeAsserts/img/profile2.jpg}" alt="Img Profile">
+                                    </div>
+                                    <div class="notif-content">
+												<span class="block">
+													Reza send messages to you
+												</span>
+                                        <span class="time">12 minutes ago</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="see-all" href="javascript:void(0);"> <strong>更多信息</strong> <i class="la la-angle-right"></i> </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img th:src="@{/zhuyeAsserts/img/profile.jpg}" alt="user-img" width="36" class="img-circle"><span th:text="${kehu.loginName}"></span></span> </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <div class="user-box">
+                                <div class="u-img"><img src="/static/zhuyeAsserts/img/profile.jpg" alt="user"></div>
+                                <div class="u-text">
+                                    <h4 th:text="${kehu.loginName}"></h4>
+                                    <p class="text-muted" th:text="${kehu.email}"></p><a th:href="#{ctx.a}+@{/gerenziliao/}+${kehu.id}" class="btn btn-rounded btn-danger btn-sm">个人资料</a></div>
+                            </div>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="ti-email"></i> 收件箱</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="ti-settings"></i> 帐户设置</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="#{ctx.f}+@{/admin/login}"><i class="fa fa-power-off"></i> 退出</a>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="sidebar" th:fragment="cedaohangBar">
+    <div class="sidebar-wrapper" id="cedaohang">
+        <ul class="nav " id="nav">
+            <li th:id="${wrTexts.id}" th:class="${actionUri == wrTexts.id ? 'nav-item active':'nav-item'}" th:each="wrTexts : ${wrTextList}" th:if="${wrTextList != null}">
+                <a href="#">
+                    <div th:onclick="'baocun();wendang(\''+${wrTexts.id}+'\');'" class="cedaohang-zongkuandu">
+                        <i class="la la-file-text-o"></i>
+                        <p th:id="'celanbiaoti'+${wrTexts.id}" class="cedaohang-textName" th:title="${wrTexts.textName}" th:text="${wrTexts.textName}"></p>
+                        <p th:text="${wrTexts != null} ? ${#dates.format(wrTexts.createDate, 'yyyy-MM-dd')}"></p>
+                    </div>
+                    <button class="btn btn-default btn-xs btn-danger" th:onclick="'shanchuXunwen(\''+${wrTexts.id}+'\');'" th:if="${huishouzhan != '1'}">删除</button>
+                    <button class="btn btn-default btn-xs btn-info" th:onclick="'chehuiXunwen(\''+${wrTexts.id}+'\');'" th:if="${huishouzhan == '1'}">撤回</button>
+                </a>
+            </li>
+            <div class="nav-item update-pro" th:if="${huishouzhan != '1'}">
+                <button data-toggle="modal" data-target="#modalUpdate" th:onclick="'baocun();xinzeng(\''+${kehuid}+'\');'">
+                    <i class="la la-plus"></i>
+                    <p>New Word</p>
+                </button>
+            </div>
+        </ul>
+    </div>
+</div>
+<footer class="footer" th:fragment="footerBar">
+    <div class="container-fluid">
+        <nav class="pull-left">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        ThemeKita
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        Help
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#license/#free-item">
+                        Licenses
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="copyright ml-auto">
+            2018, made BinZiAndHuHuDaoRen <i class="la la-heart heart text-danger"></i> by <a href="#">联系</a> - 3166688833@qq.com</div>
+    </div>
+</footer>
+<div class="sidebar" th:fragment="gerenziliaoCelanBar">
+    <div class="scrollbar-inner sidebar-wrapper">
+        <ul class="nav">
+            <li th:class="${celan == '0' ? 'nav-item active' : 'nav-item'}">
+                <a th:href="#{ctx.a}+@{/gerenziliao/}+${kehu.id}">
+                    <i class="la la-black-tie"></i>
+                    <p>账户设置</p>
+                </a>
+            </li>
+            <li th:class="${celan == '1' ? 'nav-item active' : 'nav-item'}">
+                <a th:href="#{ctx.a}+@{/chongzhimima/}+${kehu.id}">
+                    <i class="la la-lock"></i>
+                    <p>重置密码</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

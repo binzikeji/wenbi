@@ -1,0 +1,27 @@
+#端口号
+#server:
+#  port: 443
+#文件上传路径
+file-upload-path:
+#过滤器
+stopped: /a
+started: /f
+spring:
+  #数据库配置
+#  datasource:
+##    url: jdbc:mysql://localhost:3306/taat?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+##    username: root
+##    password: 123456
+##    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://39.106.63.182:3306/taat?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+#    username: root
+#    password: ZhuyubinHuzimeng-666
+#    driverClassName: com.mysql.jdbc.Driver
+  messages:
+   basename: i18n.login
+  mvc:
+   date-format: yyyy-MM-dd
+
+#logging
+#logging:
+#  level: debug

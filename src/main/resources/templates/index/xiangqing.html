@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="commons/qianduanBar :: headBar"></head>
+  <body>
+    <!-- 导航 -->
+    <nav th:replace="commons/qianduanBar :: daohangBar"></nav>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('/static/qianduan/img/post-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-heading">
+              <h1>标题</h1>
+              <h2 class="subheading">副标题</h2>
+              <span class="meta">发布人
+                <a href="#"></a>
+                发布时间</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <p>公告。</p>
+            <h2 class="section-heading">小标题</h2>
+            <p>公告。</p>
+           </div>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <footer th:replace="commons/qianduanBar :: footerBar">
+
+    </footer>
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="/static/qianduan/js/clean-blog.min.js"></script>
+
+  </body>
+
+</html>

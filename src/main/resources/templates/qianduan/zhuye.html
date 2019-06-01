@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="commons/zhuyeBar :: headBar"></head>
+<style>
+
+</style>
+<body id="zhuye">
+	<div class="wrapper">
+		<!--头-->
+		<div th:replace="commons/zhuyeBar :: touBar"></div>
+		<!--侧导航-->
+		<div th:replace="commons/zhuyeBar :: cedaohangBar"></div>
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
+					<input type="hidden" id="mainId"/>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="page-title">
+										<input class="yincang-input" id="biaoti" autocomplete="off"/>
+									</h4>
+									<div id="shuaxinGengxinshijian" style="float: left">
+										<input class="card-category yincang-input"  readonly="readonly" autocomplete="off" id="gengxinshijian"/>
+									</div>
+									<button id="mainBaocun" class="btn btn-sm btn-success baocunBtn" onclick="baocun();" th:if="${huishouzhan != '1'}">保存</button>
+								</div>
+								<div class="card-body">
+									<main>
+										<div id="text"></div>
+									</main>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--footer-->
+		<div th:replace="commons/zhuyeBar :: footerBar"></div>
+	</div>
+	<form id="tijiao" method="post"></form>
+</body>
+<script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+<script src="/static/zhuyeAsserts/js/nicescroll.js"></script>
+<script src="/static/zhuyeAsserts/js/zidingyi.js"></script>
+<script src="/static/zhuyeAsserts/js/tubiao.js"></script>
+<script src="/static/zhuyeAsserts/js/ckeditor.js"></script>
+<script src="/static/zhuyeAsserts/js/zh-cn.js"></script>
+<script src="/static/layer/layer.js"></script>
+<script src="/static/zhuyeAsserts/js/jquery.scrollbar.min.js"></script>
+<script src="/static/zhuyeAsserts/js/ready.min.js"></script>
+<script>
+    function chehuiXunwen(id){
+        //询问框
+        layer.confirm('确认要撤回这个文档吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            chehui(id);
+            //提示层
+            layer.msg('撤回喽');
+        });
+    }
+    function shanchuXunwen(id){
+        //询问框
+        layer.confirm('确认要删除这个文档吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            shanchu(id);
+            //提示层
+            layer.msg('删除喽');
+        }, function(){
+            layer.msg('不删就不删喽');
+        });
+    }
+</script>
+<script>
+	//判断是否是回收站
+    var huishouzhan = [[${huishouzhan}]];
+    //添加内容
+    var context;
+    //获取文本内容
+    var myEditor;
+    $(function () {
+        wendang('[[${wrText?.id}]]');
+        ClassicEditor
+            .create( document.querySelector( '#text' ),{
+                toolbar: [ 'heading','|','bold', 'italic','blockQuote', 'numberedList', 'bulletedList','undo','redo' ],
+                language: 'zh-cn',
+            } )
+            .then(editor => {
+				if(huishouzhan === 1){
+            		editor.isReadOnly = true; //将编辑器设为只读
+				}
+                myEditor = editor;
+				editor.setData(context);
+    		})
+			.catch( error => {
+					console.error( error );
+			});
+    });
+
+    function wendang (id){
+        $("#nav li").attr("class","nav-item");
+        if(id){
+            $("#"+id).attr("class","nav-item active");
+        }
+        $.ajax({
+            url:"[[#{ctx.a}]]/WrTextMain",
+            type:"POST",
+            data:{"id":id},
+            success:function (data) {
+                if(data){
+                    myEditor.setData(data.text);
+                    $("#biaoti").val(data.textName);
+                    var updateDate = data.updateDate;
+                    $("#gengxinshijian").val("上次更新时间 "+new Date(updateDate).format("yyyy-MM-dd hh:mm:ss"));
+                    $("#mainId").val(data.id);
+                    $("#mainShanchu").attr("onclick","shanchu(\'"+data.id+"\')");
+                }else {
+                    wendangMoren();
+                }
+            }
+        });
+    }
+    function wendangMoren() {
+        myEditor.setData("<h4><strong>Hello Word!!</strong></h4>");
+        $("#biaoti").val("标 题");
+        $("#gengxinshijian").val("上次更新时间");
+    }
+    function xinzeng (kehuid){
+        $("#tijiao").attr("action","[[#{ctx.a}]]/WrTextXinzeng/"+kehuid).submit();
+    }
+    function baocun (){
+        if(huishouzhan === 0){
+            document.getElementById("mainBaocun").disabled=true;
+            document.getElementById("mainBaocun").innerHTML="保存中...";
+            var textId = $("#mainId").val();
+            var biaoti = $("#biaoti").val();
+            var kehuId = "[[${kehuid}]]";
+            var text = myEditor.getData();
+            $.ajax({
+                url:"[[#{ctx.a}]]/WrTextBaocun",
+                data:{"id":textId,"textName":biaoti,"text":text,"kehuid":kehuId},
+                type:"post",
+                success:function (data) {
+                    console.log(data);
+                    if(data.shifoushidiyitiaoshujv == "1"){
+                        window.location.reload();
+                    }else {
+                        var gengxindata = data.date;
+                        setTimeout(baocunBtn,2000);
+                        $("#gengxinshijian").val("上次更新时间 "+new Date(gengxindata).format("yyyy-MM-dd hh:mm:ss"));
+                        document.getElementById("celanbiaoti"+textId).innerHTML=biaoti;
+                    }
+                }
+            });
+		}
+    }
+    function baocunBtn() {
+        document.getElementById("mainBaocun").disabled=false;
+        $("#mainBaocun").attr("class","btn btn-sm btn-success baocunBtn").text("保存");
+
+    }
+    function shanchu (id){
+        $("#tijiao").attr("action","[[#{ctx.a}]]/WrTextShanchu/"+id).submit();
+    }
+    function chehui (id){
+        $("#tijiao").attr("action","[[#{ctx.a}]]/chehui/"+id).submit();
+    }
+    /**
+     * 时间格式化
+     * */
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate()-1,                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
+    };
+</script>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>公告管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="/static/common/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/common/css/animate.css">
+    <link rel="stylesheet" href="/static/common/css/plugins/bootstrap-validator/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="/static/common/css/plugins/iCheck/custom.css">
+    <link rel="stylesheet" href="/static/common/css/newbootstrao.css">
+    <!--<link rel="stylesheet" href="/static/common/css/bootstrap.min.css">-->
+    <!-- Latest compiled and minified CSS -->
+    <style>
+        .form-control:focus,
+        .single-line:focus {
+            border-color: #0e9aef !important;
+        }
+        .checkbox-inline {
+            line-height: 5px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content">
+
+    <div class="ibox float-e-margins ibox-blue">
+        <div class="ibox-title">
+            <h5>公告管理</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+
+                <div class="example" style="margin-top: -10px;width:  100%;">
+                    <div class="btn-group hidden-xs" id="toolbar" role="group">
+                        <button type="button" onclick="openifram()" class="btn btn-outline btn-default" data-toggle="modal" data-target="#addModal" style="margin-left: 15px;background:#af7378 !important">
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                            发布公告
+                        </button>
+                    </div>
+                    <table id="userTableEvents"></table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- layer javascript -->
+<script src="/static/layer/layer.js"></script>
+<script src="/static/common/js/plugins/layer/layer.min.js"></script>
+<!--&lt;!&ndash; 自定义js &ndash;&gt;?v=1.0.0-->
+<script src="/static/common/js/content.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="/static/common/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script src="/static/common/js/plugins/iCheck/icheck.min.js"></script>
+
+<script>
+    window.onload=function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index);
+    };
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+    });
+    $("#addUserModal").modal();
+    $(function () {
+        var a=0;
+        $("#userTableEvents").bootstrapTable({
+            url: '/a/admin/sys/notice/getList',
+            method: 'get',
+            contentType: "application/x-www-form-urlencoded",
+            queryParamsType:'',//查询参数组织方式
+            queryParams:queryParams,//请求服务器时所传的参数
+            sidePagination:'server',//指定服务器端分页
+            search: true,
+            searchOnEnterKey: false,   //true 回车自动搜索
+            pagination: true,
+            showRefresh: true,
+            showToggle: true,
+            //showColumns: true,
+            striped: true,
+            sortable: false,
+            sortOrder: "asc",
+            clickToSelect: true,
+            pageNumber:1,
+            pageSize: 10,
+            undefinedText: "详情查看",
+            pageList: [1, 5, 10, 25, 50, 100, 'ALL'],
+            iconSize: 'outline',
+            toolbar: '#toolbar',
+            icons: {
+                refresh: 'glyphicon-repeat',
+                toggle: 'glyphicon-list-alt',
+                columns: 'glyphicon-list'
+            },
+            responseHandler:function(res){
+                //在ajax获取到数据，渲染表格之前，修改数据源
+                console.log("res"+res);
+                return res;
+            },
+            columns: [
+                {title: '编号',align: 'center',
+                    formatter: function (value,row,index) {
+                        a=a+1;
+                        return a;
+                    }
+                },
+                {field: 'textName',title: '标题',align: 'center'},
+                {field: 'textSubname',title: '副标题',align: 'center'},
+                {field: 'loginName',title: '发布人',align: 'center'},
+                {title: '正文',align: 'center',
+                    formatter:function(value,row,index){
+                        //通过formatter可以自定义列显示的内容
+                        //value：当前field的值，即id
+                        //row：当前行的数据
+                        var details = '<a href="#">点击详情查看</a>';
+                        return details;
+                    }
+                },
+                {field: 'status',title: '状态',align: 'center',
+                    formatter: function(value,row,index){
+                        if (value == '0') {
+                            return '<span class="label label-danger">撤销</span>';
+                        } else if (value == '1') {
+                            return '<span class="label label-primary">发布</span>';
+                        }
+                        return "其他";
+                    }
+                },
+                {title: '操作',align: 'center',
+                    formatter: function(value,row,index){
+                        console.log(row.id);
+                        var str = '<button type="button" class="btn btn-outline btn-default" onclick="bancircle(this.id)" id="'+row.id+'"><i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>停用</button>';
+                        if(row.status == '0'){
+                            str='<button type="button" class="btn btn-outline btn-primary" onclick="okcircle(this.id)" id="'+row.id+'"><i class="glyphicon glyphicon-ok-circle" aria-hidden="true"></i>启用</button>';
+                        }
+                        return   '<a href="#" target="_blank"><button type="button" class="btn btn-outline btn-default"><i class="glyphicon glyphicon-question-sign" aria-hidden="true"></i>查看详情</button></a>'+
+                            str;
+                    }
+                }
+            ]
+        });
+        //请求服务数据时所传参数
+        function queryParams(params){
+            return{
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                searchText: params.searchText
+            }
+        }
+    });
+    //停用账号
+    function bancircle(id) {
+        $.ajax({
+            url: "/a/admin/sys/notice/bancircle",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (data) {
+                document.getElementById("gonggao").click();
+            }
+        })
+    }
+    //恢复账号
+    function okcircle(id) {
+        $.ajax({
+            url: "/a/admin/sys/notice/okcircle",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (data) {
+                document.getElementById("gonggao").click();
+            }
+        })
+    }
+
+    function openifram(){
+        layer.open({
+            type: 2,
+            title: '发布新公告',
+            shadeClose: false,
+            shade: 0.8,
+            area: ['580px', '90%'],
+            content: '/a/admin/sys/notice/noticeAdd', //iframe的url
+            end:function () {
+                document.getElementById("gonggao").click();
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

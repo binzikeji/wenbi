@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="commons/qianduanBar :: headBar"></head>
+  <style>
+
+  </style>
+  <body>
+    <!-- 导航 -->
+    <nav th:replace="commons/qianduanBar :: daohangBar"></nav>
+
+    <!-- 头图 -->
+    <header class="masthead"  style="background-image: url('/static/qianduan/img/home-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>文 笔</h1>
+              <span class="subheading">欢迎来到文笔</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto" id="notice">
+            <!--此地方写公告-->
+          <!-- Pager -->
+        </div>
+      </div>
+    </div>
+    <hr>
+    <footer th:replace="commons/qianduanBar :: footerBar"></footer>
+  </body>
+  <!-- Bootstrap core JavaScript -->
+  <script  th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.bundle.min.js}"></script>
+  <!-- Custom scripts for this template th:src="@{/qianduan/js/clean-blog.min.js}"-->
+  <script src="/static/qianduan/js/clean-blog.min.js"></script>
+  <script>
+        $(function(){
+            $.ajax({
+                url: "/f/noticetext",
+                type: "get",
+                data: {pageNumber:1,pageSize:3},
+                dataType: "json",
+                success: function (data) {
+                    var createDate,loginName,textName,textSubname,id;
+                    for(var no = 0;no<data.rows.length;no++){
+                        createDate=myFunction(data.rows[no].createDate);
+                        loginName=data.rows[no].loginName;
+                        textName=data.rows[no].textName;
+                        textSubname=data.rows[no].textSubname;
+                        id=data.rows[no].id;
+                        var noti='<div class="post-preview">';
+                        noti=noti+'<a href="/f/xiangqing?id='+id+'">';
+                        noti=noti+'<h2 class="post-title">'+textName+'</h2>';
+                        noti=noti+'<h3 class="post-subtitle">'+textSubname+'</h3>';
+                        noti=noti+'</a>';
+                        noti=noti+'<p class="post-meta">';
+                        noti=noti+'发布人:'+loginName+'&nbsp;&nbsp;&nbsp;';
+                        noti=noti+'发布日期:'+createDate+'&nbsp;&nbsp;&nbsp;';
+                        noti=noti+'<a href="/f/xiangqing?id='+id+'">详情</a>';
+                        noti=noti+'</p>';
+                        noti=noti+'</div>';
+                        $("#notice").append(noti);
+                        //document.getElementById("notice").innerHTML(noti);
+                    }
+                    //console.log(data.rows.createDate());
+                    var notis='<div class="clearfix">';
+                        notis=notis+'<a class="btn btn-primary float-right" href="/f/gengduoxinxi">更多信息 &rarr;</a>';
+                        notis=notis+'</div>';
+                    $("#notice").append(notis);
+                    console.log(data);
+                }
+            })
+        });
+        function myFunction(date){
+            var dateee = new Date(date).toJSON();
+            var dateTime = new Date(+new Date(dateee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'')
+            //console.log("时间2==="+date);
+            return dateTime;
+        }
+  </script>
+</html>

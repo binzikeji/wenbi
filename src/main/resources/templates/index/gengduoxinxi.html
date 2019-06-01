@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="commons/qianduanBar :: headBar"></head>
+  <body>
+    <!-- 导航 -->
+    <nav th:replace="commons/qianduanBar :: daohangBar"></nav>
+
+    <!-- 头图 -->
+    <header class="masthead">
+      <div style="padding: 33.5px"></div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-preview">
+            <a th:href="#{ctx.f}+@{/xiangqing}">
+              <h2 class="post-title">
+                公告、公告、公告
+              </h2>
+              <h3 class="post-subtitle">
+                公告副标题
+              </h3>
+            </a>
+            <p class="post-meta">发布人
+              <a href="#">详情</a>
+              发布日期</p>
+          </div>
+          <hr>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-preview">
+            <a th:href="#{ctx.f}+@{/xiangqing}">
+              <h2 class="post-title">
+                公告、公告、公告
+              </h2>
+              <h3 class="post-subtitle">
+                公告副标题
+              </h3>
+            </a>
+            <p class="post-meta">发布人
+              <a href="#">详情</a>
+              发布日期</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <footer th:replace="commons/qianduanBar :: footerBar">
+
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="/static/qianduan/js/clean-blog.min.js"></script>
+  </body>
+
+</html>

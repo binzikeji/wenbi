@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>文笔后台管理-公告发起</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css}">
+    <!--<link rel="stylesheet" href="/static/common/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/static/zhuyeAsserts/css/ready.css">
+    <link rel="stylesheet" href="/static/zhuyeAsserts/css/demo.css">
+    <link rel="stylesheet" th:href="@{//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css}">
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+    <link rel="stylesheet" href="/static/favicon.ico">
+    <script th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+    <script src="/static/zhuyeAsserts/js/tubiao.js"></script>
+    <script src="/static/common/js/bootstrap-table.min.js"></script>
+    <script src="/static/zhuyeAsserts/js/jquery.scrollbar.min.js"></script>
+    <script src="/static/zhuyeAsserts/js/ready.min.js"></script>
+    <!-- Latest compiled and minified Locales -->
+    <script th:src="@{//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <script src="/static/common/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="/static/common/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+</head>
+<body>
+<form id="addForm" class="m-t" role="form"  th:action="#{ctx.a}+@{/admin/sys/notice/noticere}" th:method="post">
+    <div class="container-fluid">
+        <!--<h4 class="page-title">Forms</h4>-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                  <!--  <div class="card-header">
+                        <div class="card-title">发布新公告</div>
+                    </div>-->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="textName">标题</label>
+                            <input type="text" class="form-control" id="textName" name="textName" placeholder="公告标题">
+                            <!--<small id="textname" class="form-text text-muted">发布新公告将会实时更新到官网.</small>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="textSubname">副标题</label>
+                            <input type="text" class="form-control" id="textSubname" name="textSubname" placeholder="公告副标题">
+                        </div>
+
+                        <div class="form-check">
+                            <label>是否延时发布</label><br/>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="optionsRadios" value=""  >
+                                <span class="form-radio-sign">是</span>
+                            </label>
+                            <label class="form-radio-label ml-3">
+                                <input class="form-radio-input" type="radio" name="optionsRadios" value="" checked="">
+                                <span class="form-radio-sign">否</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="text">正文</label>
+                            <textarea class="form-control" id="text" name="text" rows="5"> </textarea>
+                        </div>
+                       <!-- <div class="form-group has-success">
+                            <label for="successInput">Success Input</label>
+                            <input type="text" id="successInput" value="Success" class="form-control">
+                        </div>
+                        <div class="form-group has-error has-feedback">
+                            <label for="errorInput">Error Input</label>
+                            <input type="text" id="errorInput" value="Error" class="form-control">
+                            <small id="emailHelp" class="form-text text-muted">Please provide a valid informations.</small>
+                        </div>-->
+
+                        <!--
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Example select</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>-->
+
+                        <!--<div class="form-group">
+                            <label for="exampleFormControlFile1">Example file input</label>
+                            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                        </div>-->
+
+                       <!-- <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="">
+                                <span class="form-check-sign">确认发布</span>
+                            </label>
+                        </div>-->
+                    </div>
+                    <div class="card-action">
+                        <button  type="submit" class="btn btn-success btn-primary block full-width m-b" >发布</button>
+                        <button class="btn btn-danger" onclick="frameclose()">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+    });
+    function frameclose() {
+        //当在iframe页面关闭自身时，在iframe页执行以下js脚本
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    }
+    function noticeRe() {
+        var textName = $("#textName").val();
+        var textSubname = $("#textSubname").val();
+        var text = $("#text").val();
+        $.ajax({
+            url: "/a/admin/sys/notice/noticere",
+            type: "post",
+            data: {textName:textName,textSubname:textSubname,text:text},
+            dataType: "json",
+            success: function (data) {
+                //当在iframe页面关闭自身时，在iframe页执行以下js脚本
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+                document.getElementById("gonggao").click();
+            }
+        })
+    }
+    $('#addForm').bootstrapValidator({
+        fields: {
+            textName: {
+                validators: {
+                    notEmpty: {
+                        message: '标题不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 128,
+                        message: '标题必须在两个字符以上'
+                    },regexp: {
+                        regexp: /^[\u4E00-\u9FA5A-Za-z0-9]+$/,
+                        message: '请输入中文、英文、数字组合的标题'
+                    }
+                }
+            },
+            textSubname: {
+                validators: {
+                    notEmpty: {
+                        message: '副标题不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 128,
+                        message: '副标题必须在两个字符以上'
+                    },regexp: {
+                        regexp: /^[\u4E00-\u9FA5A-Za-z0-9，。；;''"".,{}（）(){}【】[\]]+$/,
+                        message: '请输入（中文、英文、数字、标点符号）组合的副标题'
+                    }
+                }
+            },
+            text:{
+                validators: {
+                    notEmpty: {
+                        message: '正文不能为空'
+                    }
+                }
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.contaat.sys.mapper.WrTextMapper">
+    <update id="WrTextUpdata" parameterType="com.contaat.sys.entity.WrText">
+        <set>
+            <if test="#{textName != null} and #{textName != ''}">
+                text_name = #{textName},
+            </if>
+            <if test="#{textSubname != null} and #{textSubname != ''}">
+                text_subname = #{textSubname},
+            </if>
+            <if test="#{text != null} and #{text != ''}">
+                text = #{text},
+            </if>
+            <if test="#{updateBy != null} and #{updateBy != ''}">
+                update_by = #{updateBy},
+            </if>
+            <if test="#{textName != null} and #{textName != ''}">
+                update_date = #{updateDate},
+            </if>
+            <if test="#{remarks != null} and #{remarks != ''}">
+                remarks = #{remarks},
+            </if>
+            <if test="#{status != null} and #{status != ''}">
+                status = #{status},
+            </if>
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+</mapper>

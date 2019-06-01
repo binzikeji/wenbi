@@ -1,0 +1,36 @@
+.cedaohang-zongkuandu{
+    width: 80%
+}
+.cedaohang-textName{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    width: 70%
+}
+.yincang-input{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    background-color:transparent;
+    border:0;
+    font-weight:bold;
+    width: 500px;
+}
+main .ck.ck-content {
+    min-height: 600px!important;
+}
+.sidebar{
+    width: 261px!important;
+}
+.main-header .logo-header {
+    width: 261px!important;
+}
+.baocunBtn{
+    float: right;
+}
+.layui-layer-btn .layui-layer-btn0 {
+    color: #fff!important;
+}
+.red{
+    color: red!important;
+}

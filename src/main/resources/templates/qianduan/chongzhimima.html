@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="commons/zhuyeBar :: headBar">
+	<link rel="stylesheet" href="/static/common/css/plugins/bootstrap-validator/bootstrapValidator.min.css">
+</head>
+<style>
+
+</style>
+<body id="zhuye">
+	<div class="wrapper">
+		<!--头-->
+		<div th:replace="commons/zhuyeBar :: touBar"></div>
+		<!--侧导航-->
+		<div th:replace="commons/zhuyeBar :: gerenziliaoCelanBar"></div>
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">重置密码</h4>
+									<p class="card-category">上次更新时间 2018-12-26 16:12:06</p>
+								</div>
+								<div class="card-body">
+									<form id="addForm" th:action="#{ctx.a}+@{/xiugaimima}" method="post">
+										<input type="hidden" name="id" th:value="${kehu.id}"/>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>旧密码</label>
+													<input name="password" type="password" class="form-control" placeholder="旧密码" >
+													<!--<small class="form-text text-muted red"></small>-->
+												</div>
+												<div class="form-group">
+													<label>新密码</label>
+													<input name="newPassword" type="password" class="form-control" placeholder="新密码" >
+													<!--<small class="form-text text-muted red"></small>-->
+												</div>
+												<div class="form-group">
+													<label>确认新密码</label>
+													<input name="newConfirmPassword" type="password" class="form-control" placeholder="确认新密码" >
+													<!--<small class="form-text text-muted red"></small>-->
+												</div>
+											</div>
+											<div class="col-md-6"></div>
+											<div class="card-action" style="width: 100%">
+												<button type="submit" class="btn btn-success">保存</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--footer-->
+		<div th:replace="commons/zhuyeBar :: footerBar"></div>
+	</div>
+	<form id="tijiao" method="post"></form>
+</body>
+<script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+<script src="/static/zhuyeAsserts/js/nicescroll.js"></script>
+<script src="/static/zhuyeAsserts/js/zidingyi.js"></script>
+<script src="/static/zhuyeAsserts/js/tubiao.js"></script>
+<script src="/static/zhuyeAsserts/js/ckeditor.js"></script>
+<script src="/static/zhuyeAsserts/js/zh-cn.js"></script>
+<script src="/static/layer/layer.js"></script>
+<script src="/static/zhuyeAsserts/js/jquery.scrollbar.min.js"></script>
+<script src="/static/zhuyeAsserts/js/ready.min.js"></script>
+<script src="/static/common/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+<script th:inline="javascript">
+    var matches = [[${matches}]];
+    if(matches != null){
+        var masg = [[${masg}]];
+        var id = [[${kehu.id}]];
+        if(matches){
+            layer.alert(masg, {
+                icon: 1
+            },function () {
+                window.location.href='/a/WrTextList/'+id;
+            });
+        } else {
+            layer.alert(masg, {
+                icon: 7
+            },function () {
+                window.location.href='/a/chongzhimima/'+id;
+            });
+        }
+    }
+</script>
+<script>
+    $("#addForm").bootstrapValidator({
+        fields:{
+            password: {
+                validators: {
+                    notEmpty: {
+                        message: '密码不能为空'
+                    },
+                    stringLength: {
+                        min: 6,
+                        max: 30,
+                        message: '密码长度在6到30之间'
+                    }
+                }
+            },
+            newPassword: {
+                validators: {
+                    notEmpty: {
+                        message: '密码不能为空'
+                    },
+                    stringLength: {
+                        min: 6,
+                        max: 30,
+                        message: '密码长度在6到30之间'
+                    }
+                }
+            },
+            newConfirmPassword: {
+                validators: {
+                    notEmpty: {
+                        message: '确认密码不能为空'
+                    },
+                    identical: {
+                        field: 'newPassword',
+                        message: '两次密码不相同'
+                    }
+                }
+            },
+        }
+    });
+</script>
+</html>
